@@ -8,7 +8,7 @@
 
 # Spark环境搭建
 
-## Local本地模式
+## 1. Local本地模式
 
 ### 原理
 
@@ -80,7 +80,7 @@ counts.collect
 
 ![image-20211012203807365](.\img\image-20211012203807365.png)
 
-## Standalone 独立集群
+## 2. Standalone 独立集群
 
 ### 原理
 
@@ -169,8 +169,5 @@ http://master:4040/jobs/
 
 ![image-20211013162507111](.\img\image-20211013162507111.png)
 
-## Standalone-HA
 
-### 原理
 
-![1609555149171](.\img\1609555149171.png)
