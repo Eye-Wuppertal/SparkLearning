@@ -19,7 +19,7 @@
 ![image-20211012190738947](.\img\image-20211012190738947.png)
 
 ```shell
-tar -zxvf data/packs/spark-3.0.1-bin-hadoop2.7.tgz -C /software/    # 解压
+tar -zxvf /data/packs/spark-3.0.1-bin-hadoop2.7.tgz -C /software/    # 解压
 ```
 
 ![image-20211012191545651](.\img\image-20211012191545651.png)
@@ -94,7 +94,7 @@ counts.collect
 
 # 在cd /software/spark/conf下 
 mv slaves.template slaves
-vim slaves
+vi slaves
 
 slave1
 slave2
