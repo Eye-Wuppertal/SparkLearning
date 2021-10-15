@@ -88,8 +88,7 @@ scp -r /software/spark/conf/spark-env.sh slave1:/software/spark/conf
    zkServer.sh status
    zkServer.sh stop
    zkServer.sh start
-   # 三个节点都要打开
-   zkServer.sh start-foreground # 错误原因查看
+
    ```
 
    ![image-20211014150521555](.\img\image-20211014150521555.png)
@@ -121,3 +120,50 @@ http://slave1:8080/![image-20211014152426227](.\img\image-20211014152426227.png)
 ![image-20211014152729602](.\img\image-20211014152729602.png)
 
 再次查看
+
+![image-20211015004206495](.\img\image-20211015004206495.png)
+
+![image-20211015004132196](.\img\image-20211015004132196.png)
+
+测试WordCount
+
+```shell
+/software/spark/bin/spark-shell --master spark://master:7077,slave1:7077
+```
+
+```scala
+val textFile = sc.textFile("hdfs://master:8020/wordcount/input/words.txt")
+val counts = textFile.flatMap(_.split(" ")).map((_,1)).reduceByKey(_ + _)
+counts.collect
+counts.saveAsTextFile("hdfs://master:8020/wordcount/output2")
+```
+
+
+
+### 中途出现的问题
+
+8080界面打不开
+
+![image-20211014235541560](.\img\image-20211014235541560.png)
+
+检查端口占用情况
+
+![image-20211014235628989](.\img\image-20211014235628989.png)
+
+可以看到8080端口确实是被zookeeper占用
+
+```shell
+zkServer.sh start-foreground # 查看启动日志
+```
+
+![img](.\img\e5a4476f298ae4d1ce25d9b870d34959.png)
+
+发现是一个叫AdminServer的东西在使用8080端口，一个运行在8080端口的嵌入式Jetty服务，为一些命令提供了HTTP接口
+
+```shell
+ vi /software/zookeeper/conf/zoo.cfg
+ # 进入zoo.cfg中，修改端口
+ admin.serverPort=8060
+ #解决
+```
+
