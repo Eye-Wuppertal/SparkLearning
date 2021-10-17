@@ -132,10 +132,10 @@ http://slave1:8080/![image-20211014152426227](.\img\image-20211014152426227.png)
 ```
 
 ```scala
-val textFile = sc.textFile("hdfs://master:8020/wordcount/input/words.txt")
+val textFile = sc.textFile("hdfs://master:9000/wordcount/input/words.txt")
 val counts = textFile.flatMap(_.split(" ")).map((_,1)).reduceByKey(_ + _)
 counts.collect
-counts.saveAsTextFile("hdfs://master:8020/wordcount/output2")
+counts.saveAsTextFile("hdfs://master:9000/wordcount/output2")
 ```
 
 
@@ -166,4 +166,169 @@ zkServer.sh start-foreground # 查看启动日志
  admin.serverPort=8060
  #解决
 ```
+
+## 4. Spark On Yarn
+
+原理
+
+![1609556988870](.\img\1609556988870.png)
+
+### 准备工作
+
+关闭之前的Spark-Standalone集群
+
+```shell
+ /software/spark/sbin/stop-all.sh
+```
+
+### 1.配置Yarn历史服务器并关闭资源检查
+
+```shell
+vi /software/hadoop/etc/hadoop/yarn-site.xml
+```
+
+```xml
+<configuration>
+    <!-- 配置yarn主节点的位置 -->
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>master</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+    <!-- 设置yarn集群的内存分配方案 -->
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>20480</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.minimum-allocation-mb</name>
+        <value>2048</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.vmem-pmem-ratio</name>
+        <value>2.1</value>
+    </property>
+    <!-- 开启日志聚合功能 -->
+    <property>
+        <name>yarn.log-aggregation-enable</name>
+        <value>true</value>
+    </property>
+    <!-- 设置聚合日志在hdfs上的保存时间 -->
+    <property>
+        <name>yarn.log-aggregation.retain-seconds</name>
+        <value>604800</value>
+    </property>
+    <!-- 设置yarn历史服务器地址 -->
+    <property>
+        <name>yarn.log.server.url</name>
+        <value>http://master:19888/jobhistory/logs</value>
+    </property>
+    <!-- 关闭yarn内存检查 -->
+    <property>
+        <name>yarn.nodemanager.pmem-check-enabled</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.vmem-check-enabled</name>
+        <value>false</value>
+    </property>
+</configuration>
+```
+
+复制配置到其他节点
+
+```shell
+cd /software/hadoop/etc/hadoop
+scp -r yarn-site.xml root@slave1:$PWD
+scp -r yarn-site.xml root@slave2:$PWD
+```
+
+### 2.配置Spark的历史服务器和Yarn的整合
+
+```shell
+cd /software/spark/conf
+
+mv spark-defaults.conf.template spark-defaults.conf
+vi spark-defaults.conf
+# 添加以下内容
+spark.eventLog.enabled                  true
+spark.eventLog.dir                      hdfs://master:9000/sparklog/
+spark.eventLog.compress                 true
+spark.yarn.historyServer.address        master:18080
+
+vi /software/spark/conf/spark-env.sh
+# 添加以下内容
+## 配置spark历史日志存储地址
+SPARK_HISTORY_OPTS="-Dspark.history.fs.logDirectory=hdfs://master:9000/sparklog/ -Dspark.history.fs.cleaner.enabled=true"
+
+# sparklog需要手动创建
+hadoop fs -mkdir -p /sparklog
+# （创建目录失败，可能是安全模式导致的，关闭安全模式即可）
+hadoop  dfsadmin -safemode leave
+
+# 修改日志级别
+cd /software/spark/conf
+mv log4j.properties.template log4j.properties
+vi log4j.properties
+```
+
+![image-20211017143226256](.\img\image-20211017143226256.png)
+
+```shell
+# 分发
+cd /software/spark/conf
+scp -r spark-env.sh root@slave1:$PWD
+scp -r spark-env.sh root@slave2:$PWD
+
+scp -r spark-defaults.conf root@slave1:$PWD
+scp -r spark-defaults.conf root@slave2:$PWD
+
+scp -r log4j.properties root@slave1:$PWD
+scp -r log4j.properties root@slave2:$PWD
+```
+
+### 3.配置依赖的Spark 的jar包
+
+```shell
+# 1. 在HDFS上创建存储spark相关jar包的目录
+hadoop fs -mkdir -p /spark/jars/
+
+# 2. 上传$SPARK_HOME/jars所有jar包到HDFS
+hadoop fs -put /software/spark/jars/* /spark/jars/
+
+# 3. 在master上修改spark-defaults.conf
+vi /software/spark/conf/spark-defaults.conf
+# 添加
+spark.yarn.jars  hdfs://master:9000/spark/jars/*
+# 分发
+cd /software/spark/conf
+scp -r spark-defaults.conf root@slave1:$PWD
+scp -r spark-defaults.conf root@slave2:$PWD
+```
+
+### 4.启动服务
+
+```shell
+# 在master上启动Hadoop集群
+start-all.sh
+# 在master上启动MRHistoryServer服务
+mr-jobhistory-daemon.sh start historyserver
+# 在master上启动SparkHistoryServer服务
+/software/spark/sbin/start-history-server.sh
+```
+
+\- MRHistoryServer服务WEB UI页面：
+
+http://master:19888
+
+![image-20211017161110480](.\img\image-20211017161110480.png)
+
+\- Spark HistoryServer服务WEB UI页面：
+
+http://master:18080/
+
+![image-20211017161524462](.\img\image-20211017161524462.png)
 
