@@ -332,3 +332,86 @@ http://master:18080/
 
 ![image-20211017161524462](.\img\image-20211017161524462.png)
 
+## 两种模式
+
+### client-了解
+
+![1609558928933](.\img\1609558928933.png)
+
+### cluster模式-开发使用
+
+![1609559145839](.\img\1609559145839.png)
+
+## 操作
+
+1.需要Yarn集群
+
+2.历史服务器
+
+3.提交任务的的客户端工具-spark-submit命令
+
+4.待提交的spark任务/程序的字节码--可以使用示例程序
+
+
+
+### client模式
+
+```shell
+SPARK_HOME=/software/spark
+${SPARK_HOME}/bin/spark-submit \
+--master yarn  \
+--deploy-mode client \
+--driver-memory 512m \
+--driver-cores 1 \
+--executor-memory 512m \
+--num-executors 2 \
+--executor-cores 1 \
+--class org.apache.spark.examples.SparkPi \
+${SPARK_HOME}/examples/jars/spark-examples_2.12-3.0.1.jar \
+10
+```
+
+![image-20211019161608412](.\img\image-20211019161608412.png)
+
+查看web界面
+
+http://master:8088/cluster
+
+![image-20211019161757223](.\img\image-20211019161757223.png)
+
+
+
+### cluster模式
+
+```shell
+SPARK_HOME=/export/server/spark
+${SPARK_HOME}/bin/spark-submit \
+--master yarn \
+--deploy-mode cluster \
+--driver-memory 512m \
+--executor-memory 512m \
+--num-executors 1 \
+--class org.apache.spark.examples.SparkPi \
+${SPARK_HOME}/examples/jars/spark-examples_2.12-3.0.1.jar \
+10
+```
+
+![image-20211019161904076](.\img\image-20211019161904076.png)
+
+查看web界面
+
+http://master:8088/cluster
+
+![image-20211019162140264](.\img\image-20211019162140264.png)
+
+![image-20211019162101090](.\img\image-20211019162101090.png)
+
+
+
+
+
+
+
+
+
+## 
