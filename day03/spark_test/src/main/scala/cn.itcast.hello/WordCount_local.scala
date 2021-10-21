@@ -7,7 +7,7 @@ import org.apache.spark.{SparkConf, SparkContext}
  * Author itcast
  * Desc 演示Spark入门案例-WordCount
  */
-object WordCount {
+object WordCount_local {
   def main(args: Array[String]): Unit = {
     // TODO 1.env/准备sc/SparkContext/Spark上下文执行环境
     val conf: SparkConf = new SparkConf().setAppName("wc").setMaster("local[*]")
@@ -36,7 +36,7 @@ object WordCount {
     result.repartition(1).saveAsTextFile("data/output/result")
     result.repartition(2).saveAsTextFile("data/output/result2")
 
-        // 为了便于查看Web-UI可以让程序睡一会
+    // 为了便于查看Web-UI可以让程序睡一会
     Thread.sleep(1000 * 60)
 
     // TODO 5.关闭资源
