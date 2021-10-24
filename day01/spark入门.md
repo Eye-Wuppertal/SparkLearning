@@ -112,9 +112,7 @@ YARN_CONF_DIR=/software/hadoop/etc/hadoop
 ## 指定spark老大Master的IP和提交任务的通信端口
 SPARK_MASTER_HOST=master
 SPARK_MASTER_PORT=7077
-
 SPARK_MASTER_WEBUI_PORT=8080
-
 SPARK_WORKER_CORES=1
 SPARK_WORKER_MEMORY=1g
 
@@ -136,6 +134,8 @@ scp /etc/profile slave2:/etc/
 ![image-20211012212209392](.\img\image-20211012212209392.png)
 
 http://master:8080/
+
+(当时配置有一丢丢小问题，图里的worker应该是2)
 
 ![image-20211013143620720](.\img\image-20211013143620720.png)
 

@@ -113,7 +113,9 @@ scp -r /software/spark/conf/spark-env.sh slave1:/software/spark/conf
 
    ![image-20211014152457931](.\img\image-20211014152457931.png)
 
-http://slave1:8080/![image-20211014152426227](.\img\image-20211014152426227.png)
+http://slave1:8080/
+
+![image-20211014152426227](.\img\image-20211014152426227.png)
 
 5. 模拟master故障
 
