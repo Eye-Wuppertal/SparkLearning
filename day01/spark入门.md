@@ -88,8 +88,6 @@ counts.collect
 
 ### 搭建步骤
 
-先将安装的spark克隆到其他两个节点,profile 文件也一起拷贝
-
 ```shell
 
 # 在cd /software/spark/conf下 
@@ -116,6 +114,7 @@ SPARK_MASTER_WEBUI_PORT=8080
 SPARK_WORKER_CORES=1
 SPARK_WORKER_MEMORY=1g
 
+# 将安装的spark克隆到其他两个节点,profile 文件也一起拷贝
 scp -r /software/spark/ slave1:/software/
 scp -r /software/spark/ slave2:/software/
 scp /etc/profile slave1:/etc/

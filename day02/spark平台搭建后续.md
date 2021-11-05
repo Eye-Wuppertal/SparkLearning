@@ -88,7 +88,7 @@ scp -r /software/spark/conf/spark-env.sh slave1:/software/spark/conf
    zkServer.sh status
    zkServer.sh stop
    zkServer.sh start
-
+# 三个都要启动！！！！
    ```
 
    ![image-20211014150521555](.\img\image-20211014150521555.png)
