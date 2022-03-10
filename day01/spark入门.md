@@ -4,7 +4,7 @@
 
 ## 组成模块
 
-![1609550802202](.\img\1609550802202.png)
+![1609550802202](img/1609550802202-16468875954441.png)
 
 # Spark环境搭建
 
@@ -12,23 +12,23 @@
 
 ### 原理
 
-![1609551528270](.\img\1609551528270.png)
+![1609551528270](img/1609551528270-16468875973852.png)
 
 ### 安装spark到linux虚拟机上
 
-![image-20211012190738947](.\img\image-20211012190738947.png)
+![image-20211012190738947](img/image-20211012190738947-16468875997333.png)
 
 ```shell
 tar -zxvf /data/packs/spark-3.0.1-bin-hadoop2.7.tgz -C /software/    # 解压
 ```
 
-![image-20211012191545651](.\img\image-20211012191545651.png)
+![image-20211012191545651](img/image-20211012191545651-16468876037994.png)
 
 ```shell
 mv /software/spark-3.0.1-bin-hadoop2.7/ /software/spark/    #修改路径名
 ```
 
-![image-20211012192544055](.\img\image-20211012192544055.png)
+![image-20211012192544055](img/image-20211012192544055-16468876059055.png)
 
 ```shell
 # 需要root 权限
@@ -52,11 +52,11 @@ export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOMR/sbin
 /software/spark/bin/spark-shell 
 ```
 
-![image-20211012193532241](.\img\image-20211012193532241.png)
+![image-20211012193532241](img/image-20211012193532241-16468876091216.png)
 
 打开web  UI http://master:4040
 
-![image-20211013144114728](.\img\image-20211013144114728.png)
+![image-20211013144114728](img/image-20211013144114728-16468876148287.png)
 
 ### 跑例程                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
@@ -78,13 +78,13 @@ val counts = textFile.flatMap(_.split(" ")).map((_,1)).reduceByKey(_ + _)
 counts.collect
 ```
 
-![image-20211012203807365](.\img\image-20211012203807365.png)
+![image-20211012203807365](img/image-20211012203807365-16468876232558.png)
 
 ## 2. Standalone 独立集群
 
 ### 原理
 
-![1609553123267](.\img\1609553123267.png)
+![1609553123267](img/1609553123267-16468876266419.png)
 
 ### 搭建步骤
 
@@ -130,20 +130,20 @@ scp /etc/profile slave2:/etc/
 /software/spark/sbin/start-all.sh
 ```
 
-![image-20211012212209392](.\img\image-20211012212209392.png)
+![image-20211012212209392](img/image-20211012212209392-164688762927310.png)
 
 http://master:8080/
 
 (当时配置有一丢丢小问题，图里的worker应该是2)
 
-![image-20211013143620720](.\img\image-20211013143620720.png)
+![image-20211013143620720](img/image-20211013143620720-164688763062311.png)
 
 ```shell
 # 启动
 /software/spark/bin/spark-shell --master spark://master:7077
 ```
 
-![image-20211013153439635](.\img\image-20211013153439635.png)
+![image-20211013153439635](img/image-20211013153439635-164688763190612.png)
 
 ### 跑wordcount
 
@@ -162,11 +162,11 @@ counts.saveAsTextFile("hdfs://master:9000/data/wordcount/output2")
 
 http://master:9870/explorer.html#/data/wordcount/output2
 
-![image-20211013162449297](.\img\image-20211013162449297.png)
+![image-20211013162449297](img/image-20211013162449297-164688763462613.png)
 
 http://master:4040/jobs/
 
-![image-20211013162507111](.\img\image-20211013162507111.png)
+![image-20211013162507111](img/image-20211013162507111-164688763625914.png)
 
 
 

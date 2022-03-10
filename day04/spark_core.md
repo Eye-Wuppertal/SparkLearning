@@ -2,7 +2,7 @@
 
 ## why?
 
-![1609637735554](.\img\1609637735554.png)
+![1609637735554](img/1609637735554-16468877557801.png)
 
 ## what?
 
@@ -31,7 +31,7 @@ Internally, each RDD is characterized by five main properties:
 
 ## WordCount中的RDD的五大属性
 
-![1609638705317](.\img\1609638705317.png)
+![1609638705317](img/1609638705317-16468877579172.png)
 
 
 
@@ -41,7 +41,7 @@ Internally, each RDD is characterized by five main properties:
 
 RDD中的数据可以来源于2个地方：本地集合或外部数据源
 
-![1609640251337](.\img\1609640251337.png)
+![1609640251337](img/1609640251337-16468877597593.png)
 
 
 
@@ -105,7 +105,7 @@ object RDDDemo01_Create {
 
 ## 分类
 
-![1609641960937](.\img\1609641960937.png)
+![1609641960937](img/1609641960937-16468877629894.png)
 
 
 
@@ -158,7 +158,7 @@ object RDDDemo02_Basic {
 
 ## 分区操作
 
-![1609643670770](.\img\1609643670770.png)
+![1609643670770](img/1609643670770-16468877674125.png)
 
 ```Java
 package cn.itcast.core

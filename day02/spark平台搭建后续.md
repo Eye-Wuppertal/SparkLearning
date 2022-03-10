@@ -4,11 +4,11 @@
 
 ### 原理
 
-![1609555149171](.\img\1609555149171.png)
+![1609555149171](img/1609555149171-16468876539711.png)
 
 ### zookeeper安装配置
 
-![image-20211014124912063](.\img\image-20211014124912063.png)
+![image-20211014124912063](img/image-20211014124912063-16468876552952.png)
 
 ```shell
 tar -zxvf /data/packas/apache-zookeeper-3.7.0-bin.tar.gz -C /software/
@@ -66,7 +66,7 @@ scp /etc/profile slave1:/etc
 zkServer.sh start
 ```
 
-![image-20211014145111044](.\img\image-20211014145111044.png)
+![image-20211014145111044](img/image-20211014145111044-16468876579533.png)
 
 ### 修改 spark配置
 
@@ -97,9 +97,9 @@ scp -r /software/spark/conf/spark-env.sh slave1:/software/spark/conf
 
 ```shell
 /software/spark/sbin/start-all.sh
-```
+   ```
 
-![image-20211014151731299](.\img\image-20211014151731299.png)
+![image-20211014151731299](img/image-20211014151731299-16468876601144.png)
 
 3. slave1上单独挂个master
 
@@ -107,25 +107,25 @@ scp -r /software/spark/conf/spark-env.sh slave1:/software/spark/conf
 /software/spark/sbin/start-master.sh
 ```
 
-![image-20211014151838298](.\img\image-20211014151838298.png)
+![image-20211014151838298](img/image-20211014151838298-16468876624205.png)
 
 4. http://master:8080/
 
-   ![image-20211014152457931](.\img\image-20211014152457931.png)
+   ![image-20211014152457931](img/image-20211014152457931-16468876641206.png)
 
 http://slave1:8080/
 
-![image-20211014152426227](.\img\image-20211014152426227.png)
+![image-20211014152426227](img/image-20211014152426227-16468876658707.png)
 
 5. 模拟master故障
 
-![image-20211014152729602](.\img\image-20211014152729602.png)
+![image-20211014152729602](img/image-20211014152729602-16468876676608.png)
 
 再次查看
 
-![image-20211015004206495](.\img\image-20211015004206495.png)
+![image-20211015004206495](img/image-20211015004206495-16468876690649.png)
 
-![image-20211015004132196](.\img\image-20211015004132196.png)
+![image-20211015004132196](img/image-20211015004132196-164688767068310.png)
 
 测试WordCount
 
@@ -146,11 +146,11 @@ counts.saveAsTextFile("hdfs://master:9000/wordcount/output2")
 
 8080界面打不开
 
-![image-20211014235541560](.\img\image-20211014235541560.png)
+![image-20211014235541560](img/image-20211014235541560-164688767287311.png)
 
 检查端口占用情况
 
-![image-20211014235628989](.\img\image-20211014235628989.png)
+![image-20211014235628989](img/image-20211014235628989-164688767430612.png)
 
 可以看到8080端口确实是被zookeeper占用
 
@@ -158,7 +158,7 @@ counts.saveAsTextFile("hdfs://master:9000/wordcount/output2")
 zkServer.sh start-foreground # 查看启动日志
 ```
 
-![img](.\img\e5a4476f298ae4d1ce25d9b870d34959.png)
+![img](img/e5a4476f298ae4d1ce25d9b870d34959-164688767621313.png)
 
 发现是一个叫AdminServer的东西在使用8080端口，一个运行在8080端口的嵌入式Jetty服务，为一些命令提供了HTTP接口
 
@@ -173,7 +173,7 @@ zkServer.sh start-foreground # 查看启动日志
 
 原理
 
-![1609556988870](.\img\1609556988870.png)
+![1609556988870](img/1609556988870-164688767798714.png)
 
 ### 准备工作
 
@@ -277,7 +277,7 @@ mv log4j.properties.template log4j.properties
 vi log4j.properties
 ```
 
-![image-20211017143226256](.\img\image-20211017143226256.png)
+![image-20211017143226256](img/image-20211017143226256-164688768431415.png)
 
 ```shell
 # 分发
@@ -326,23 +326,23 @@ mr-jobhistory-daemon.sh start historyserver
 
 http://master:19888
 
-![image-20211017161110480](.\img\image-20211017161110480.png)
+![image-20211017161110480](img/image-20211017161110480-164688768668716.png)
 
 \- Spark HistoryServer服务WEB UI页面：
 
 http://master:18080/
 
-![image-20211017161524462](.\img\image-20211017161524462.png)
+![image-20211017161524462](img/image-20211017161524462-164688768815017.png)
 
 ## 两种模式
 
 ### client-了解
 
-![1609558928933](.\img\1609558928933.png)
+![1609558928933](img/1609558928933-164688768976318.png)
 
 ### cluster模式-开发使用
 
-![1609559145839](.\img\1609559145839.png)
+![1609559145839](img/1609559145839-164688769106719.png)
 
 ## 操作
 
@@ -373,13 +373,13 @@ ${SPARK_HOME}/examples/jars/spark-examples_2.12-3.0.1.jar \
 10
 ```
 
-![image-20211019161608412](.\img\image-20211019161608412.png)
+![image-20211019161608412](img/image-20211019161608412-164688769382520.png)
 
 查看web界面
 
 http://master:8088/cluster
 
-![image-20211019161757223](.\img\image-20211019161757223.png)
+![image-20211019161757223](img/image-20211019161757223-164688769538421.png)
 
 
 
@@ -398,15 +398,15 @@ ${SPARK_HOME}/examples/jars/spark-examples_2.12-3.0.1.jar \
 10
 ```
 
-![image-20211019161904076](.\img\image-20211019161904076.png)
+![image-20211019161904076](img/image-20211019161904076-164688769806322.png)
 
 查看web界面
 
 http://master:8088/cluster
 
-![image-20211019162140264](.\img\image-20211019162140264.png)
+![image-20211019162140264](img/image-20211019162140264-164688770029323.png)
 
-![image-20211019162101090](.\img\image-20211019162101090.png)
+![image-20211019162101090](img/image-20211019162101090-164688770142524.png)
 
 
 
