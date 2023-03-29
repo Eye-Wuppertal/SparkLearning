@@ -1,0 +1,164 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.scala</groupId>
+    <artifactId>Spark-XGBoost</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <inceptionYear>2008</inceptionYear>
+
+    <!-- 声明子项目公用的配置属性 -->
+    <properties>
+        <scala.version>2.11.8</scala.version>
+        <hadoop.version>2.7.3</hadoop.version>
+
+        <!--        <spark.version>2.0.1</spark.version>-->
+        <spark.version>2.3.1</spark.version>
+
+        <!--        <xgboost4j.version>0.72</xgboost4j.version>-->
+        <xgboost4j.version>0.90</xgboost4j.version>
+
+        <!--                <hadoop.version>2.5.1</hadoop.version>-->
+
+        <!--        &lt;!&ndash;        <spark.version>2.0.1</spark.version>&ndash;&gt;-->
+        <!--                <spark.version>2.1.1</spark.version>-->
+
+        <!--                &lt;!&ndash;        <xgboost4j.version>0.72</xgboost4j.version>&ndash;&gt;-->
+        <!--                <xgboost4j.version>0.72</xgboost4j.version>-->
+
+        <hbase.version>1.2.0</hbase.version>
+        <kafka.version>0.8.2.2</kafka.version>
+        <jedis.version>2.9.0</jedis.version>
+        <mysql.version>5.1.6</mysql.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.22</slf4j.version>
+        <pool.version>2.4.2</pool.version>
+        <jackson.version>2.8.6</jackson.version>
+        <net.sf.json.version>2.4</net.sf.json.version>
+        <joda.version>2.9.9</joda.version>
+        <postgresql.version>42.1.4</postgresql.version>
+        <javax.mail>1.6.2</javax.mail>
+        <qconf.version>1.2.2</qconf.version>
+        <elasticsearch.version>6.0.1</elasticsearch.version>
+        <druid.version>1.1.10</druid.version>
+    </properties>
+
+    <!-- 声明并引入子项目共有的依赖 -->
+    <dependencies>
+        <!-- 引入Spark相关的Jar包 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.11</artifactId>
+            <version>${spark.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.11</artifactId>
+            <version>${spark.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.11</artifactId>
+            <version>${spark.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/ml.dmlc/xgboost4j -->
+        <dependency>
+            <groupId>ml.dmlc</groupId>
+            <artifactId>xgboost4j-spark</artifactId>
+            <version>${xgboost4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ml.dmlc</groupId>
+            <artifactId>xgboost4j</artifactId>
+            <version>${xgboost4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-graphx -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-graphx_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-mllib -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/jfree/jfreechart -->
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>make-assembly</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
