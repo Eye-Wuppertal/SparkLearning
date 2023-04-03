@@ -1,0 +1,4 @@
+hello tal hadoop spark flink
+hello word spark hive hbase
+hello flume kafka
+hello tal
