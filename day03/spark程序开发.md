@@ -367,23 +367,41 @@ ${SPARK_HOME}/bin/spark-submit \
 --executor-memory 512m \
 --class com.tal.test.WordCountOnYarn \
 /root/wc.jar \
-hdfs://master:8020/wordcount/input/words.txt \
-hdfs://master:8020/wordcount/output0
+hdfs://master:9000/wordcount/input/words.txt \
+hdfs://master:9000/wordcount/output001
+
+spark-submit \
+--master yarn \
+--deploy-mode cluster \
+--driver-memory 512m \
+--executor-memory 512m \
+--class com.tal.test.WordCountOnYarn \
+/root/wc.jar \
+hdfs://master:9000/wordcount/input/words.txt \
+hdfs://master:9000/wordcount/output001
 ```
-
-
 
 中途遇见的问题
 
 ```shell
-java.lang.ClassNotFoundException: cn.itcast.hello.WordCount_OnYarn
+java.lang.ClassNotFoundException: com.tal.test.WordCountOnYarn
+# 可能存在的原因是 打包前clean把build生成的class给清掉了
+# 解决方法：项目重新build之后，直接点击package
 ```
 
-scala文件没有建在Scala文件下
+```shell
+ERROR yarn.Client: Application diagnostics message: User class threw exception: java.net.ConnectException: Call From slave2/192.168.197.103 to master:8020 failed on connection exception: java.net.ConnectException: 拒绝连接;
+
+#spark连接HDFS时直接报错，可能是hadoop中core-site.xml配置的集群端口是9000，而spark写的是8020，改为9000即可。
+```
 
  ```shell
- java.io.IOException: com.google.protobuf.InvalidProtocolBufferException: Protocol message end-group tag did not match expected tag.
+  org.apache.hadoop.mapred.FileAlreadyExistsException: Output directory hdfs://master:9000/wordcount/output001
+  already exists
+ # 已经删除输出目录了但是一直提示输出路径已存在
+ 
+ # 调试发现本地scala版本问题，版本全部统一为2.12解决
  ```
 
-端口号弄混，应该把自己设定的的9000和Hadoop的9870弄混了
+
 

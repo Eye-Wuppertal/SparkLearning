@@ -386,7 +386,7 @@ http://master:8088/cluster
 ### cluster模式
 
 ```shell
-SPARK_HOME=/export/server/spark
+SPARK_HOME=/software/spark
 ${SPARK_HOME}/bin/spark-submit \
 --master yarn \
 --deploy-mode cluster \

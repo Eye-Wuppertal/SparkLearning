@@ -16,7 +16,7 @@ object WordCountOnYarn {
       System.exit(1)    //非0表示非正常退出程序
     }
     // TODO 1.env/准备sc/SparkContext(Spark上下文执行环境)
-    val conf: SparkConf = new SparkConf().setAppName("wc") //.setMaster("local[*]")
+    val conf: SparkConf = new SparkConf().setAppName("wc")//.setMaster("local[*]")
     val sc: SparkContext = new SparkContext(conf)
     sc.setLogLevel("WARN")
 
@@ -44,6 +44,7 @@ object WordCountOnYarn {
     // 如果设计HDFS权限问题，不能写入，需执行：
     // hadoop fs -chmod -R 777 并添加下列代码
     System.setProperty("HADOOP_USER_NAME","root")
+
     result.repartition(1).saveAsTextFile(args(1))
 
     // 为了便于查看Web-UI可以让程序睡一会

@@ -162,6 +162,9 @@
                                 <goal>testCompile</goal>
                             </goals>
                             <configuration>
+                                <includes>
+                                    <include>**/*.scala</include>
+                                </includes>
                                 <args>
                                     <arg>-dependencyfile</arg>
                                     <arg>${project.build.directory}/.scala_dependencies</arg>
