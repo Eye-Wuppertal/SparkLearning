@@ -232,6 +232,21 @@ pom里添加依赖，模板
 
 在src/main/目录下新建scala目录，并右键设为源路径（Source Root）
 
+```scala
+//TODO 0.env/创建环境
+
+//TODO 1.source/加载数据/创建RDD
+
+//TODO 2.transformation/数据操作/转换
+
+//TODO 3.sink/输出
+
+//TODO 4.关闭资源
+
+```
+
+
+
 scala example
 
 ```scala

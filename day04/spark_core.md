@@ -4,11 +4,13 @@
 
 ![1609637735554](img/1609637735554-16468877557801.png)
 
+List只支持单机，RDD支持分布式
+
 ## what?
 
 A Resilient Distributed Dataset (RDD), the basic abstraction in Spark. 
 
-RDD:弹性分布式数据集,是Spark中最基本的数据抽象,用来表示分布式集合,支持分布式操作!
+RDD:弹性分布式数据集,是Spark中最基本的数据抽象,用来表示分布式集合,支持分布式操作!由分区组成
 
 
 
@@ -18,7 +20,7 @@ Internally, each RDD is characterized by five main properties:
 
  - 分区列表: A list of partitions
 
- - 计算函数: A function for computing each split
+ - 计算函数: A function for computing each split（函数作用在每个小分区）
 
  - 依赖关系: A list of dependencies on other RDDs
 
@@ -46,16 +48,17 @@ RDD中的数据可以来源于2个地方：本地集合或外部数据源
 
 
 ```java 
-package cn.itcast.core
+package com.tal.core
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
-/**
- * Author itcast
- * Desc 演示RDD的创建
- */
-object RDDDemo01_Create {
+/*
+    author: Tal
+    TODO: 
+*/
+
+object RDD_01 {
   def main(args: Array[String]): Unit = {
     //TODO 0.env/创建环境
     val conf: SparkConf = new SparkConf().setAppName("spark").setMaster("local[*]")
@@ -63,36 +66,39 @@ object RDDDemo01_Create {
     sc.setLogLevel("WARN")
 
     //TODO 1.source/加载数据/创建RDD
-    val rdd1: RDD[Int] = sc.parallelize(1 to 10) //8
-    val rdd2: RDD[Int] = sc.parallelize(1 to 10,3) //3
+    val rdd1: RDD[Int] = sc.parallelize(1 to 10)       //6
+    val rdd2: RDD[Int] = sc.parallelize(1 to 10, 3)   //3
 
-    val rdd3: RDD[Int] = sc.makeRDD(1 to 10)//底层是parallelize //8
-    val rdd4: RDD[Int] = sc.makeRDD(1 to 10,4) //4
+    val rdd3: RDD[Int] = sc.makeRDD(1 to 10)           //6
+    val rdd4: RDD[Int] = sc.makeRDD(1 to 10, 4)   //4
 
-    //RDD[一行行的数据]
-    val rdd5: RDD[String] = sc.textFile("data/input/words.txt")//2
-    val rdd6: RDD[String] = sc.textFile("data/input/words.txt",3)//3
-    //RDD[一行行的数据]
-    val rdd7: RDD[String] = sc.textFile("data/input/ratings10")//10
-    val rdd8: RDD[String] = sc.textFile("data/input/ratings10",3)//10
-    //RDD[(文件名, 一行行的数据),(文件名, 一行行的数据)....]
-    val rdd9: RDD[(String, String)] = sc.wholeTextFiles("data/input/ratings10")//2
-    val rdd10: RDD[(String, String)] = sc.wholeTextFiles("data/input/ratings10",3)//3
+    val rdd5: RDD[String] = sc.textFile("data/input/heart.csv")    //2
+    val rdd6: RDD[String] = sc.textFile("data/input/heart.csv",5)    //5
 
-    println(rdd1.getNumPartitions)//8 //底层partitions.length
-    println(rdd2.partitions.length)//3
-    println(rdd3.getNumPartitions)//8
-    println(rdd4.getNumPartitions)//4
-    println(rdd5.getNumPartitions)//2
-    println(rdd6.getNumPartitions)//3
-    println(rdd7.getNumPartitions)//10
-    println(rdd8.getNumPartitions)//10
-    println(rdd9.getNumPartitions)//2
-    println(rdd10.getNumPartitions)//3
+    val rdd7: RDD[String] = sc.textFile("data/input")   //3
+    val rdd8: RDD[String] = sc.textFile("data/input",5)   //6
 
-    //TODO 2.transformation
+    //wholeTextFiles(本地/HDFS文件夹,分区数)
+
+
+    //TODO 2.transformation/数据操作/转换
+
     //TODO 3.sink/输出
+    println(rdd1.getNumPartitions)
+    println(rdd1.partitions.length)
+    println(rdd2.getNumPartitions)
+    println(rdd3.partitions.length)
+    println(rdd4.getNumPartitions)
+    println(rdd5.partitions.length)
+    println(rdd6.getNumPartitions)
+    println(rdd7.partitions.length)
+    println(rdd8.getNumPartitions)
+
+    //TODO 4.关闭资源
+    sc.stop()
+
   }
+
 }
 
 ```
